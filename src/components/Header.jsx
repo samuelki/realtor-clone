@@ -1,15 +1,29 @@
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 export default function Header() {
+  const [pageState, setPageState] = useState('Log in');
   const location = useLocation();
   const navigate = useNavigate();
+  const auth = getAuth();
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setPageState('Profile');
+      } else {
+        setPageState('Log in');
+      }
+    });
+  });
 
   function pathnameMatchRoute(route) {
     if (route === location.pathname) return true;
   }
 
   return (
-    <div className='bg-white border-b shadow-sm sticky top-0 z-1'>
+    <div className='bg-white border-b shadow-sm sticky top-0 z-50'>
       <header className='flex justify-between items-center px-3 max-w-6xl mx-auto'>
         <div>
           <img
@@ -23,7 +37,7 @@ export default function Header() {
           <ul className='flex space-x-10'>
             <li
               className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 border-b-[3px] border-b-transparent ${
-                pathnameMatchRoute('/') && 'text-black border-b-red-500'
+                pathnameMatchRoute('/') && '!text-black !border-b-red-500'
               }`}
               onClick={() => navigate('/')}
             >
@@ -31,7 +45,7 @@ export default function Header() {
             </li>
             <li
               className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 border-b-[3px] border-b-transparent ${
-                pathnameMatchRoute('/offers') && 'text-black border-b-red-500'
+                pathnameMatchRoute('/offers') && '!text-black !border-b-red-500'
               }`}
               onClick={() => navigate('/offers')}
             >
@@ -39,11 +53,12 @@ export default function Header() {
             </li>
             <li
               className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 border-b-[3px] border-b-transparent ${
-                pathnameMatchRoute('/login') && 'text-black border-b-red-500'
+                (pathnameMatchRoute('/login') || pathnameMatchRoute('/profile')) &&
+                '!text-black !border-b-red-500'
               }`}
-              onClick={() => navigate('/login')}
+              onClick={() => navigate('/profile')}
             >
-              Log in
+              {pageState}
             </li>
           </ul>
         </div>
