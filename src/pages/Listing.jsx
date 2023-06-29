@@ -45,6 +45,7 @@ export default function Listing() {
         effect='fade'
         modules={[EffectFade]}
         autoplay={{ delay: 3000 }}
+        loop
       >
         {listing.imgUrls.map((url, index) => (
           <SwiperSlide key={index}>
@@ -83,7 +84,7 @@ export default function Listing() {
             {listing.offer
               ? listing.discountedPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
               : listing.regularPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-            {listing.type === 'rent' ? '/month' : ''}
+            {listing.type === 'rent' ? ' / month' : ''}
           </p>
           <p className='flex items-center mt-6 mb-3 font-semibold'>
             <FaMapMarkerAlt className='text-green-700 mr-1' />
@@ -95,7 +96,11 @@ export default function Listing() {
             </p>
             {listing.offer && (
               <p className='w-full max-w-[200px] bg-green-700 rounded-md p-1 text-white text-center font-semibold shadow-md'>
-                ${listing.regularPrice - listing.discountedPrice} discount
+                $
+                {(listing.regularPrice - listing.discountedPrice)
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+                discount
               </p>
             )}
           </div>
