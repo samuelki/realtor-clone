@@ -4,11 +4,13 @@ import { collection, getDocs, limit, orderBy, query, startAfter, where } from 'f
 import { db } from '../firebase';
 import Spinner from '../components/Spinner';
 import ListingItem from '../components/ListingItem';
+import { useParams } from 'react-router-dom';
 
-export default function Offers() {
+export default function Category() {
   const [listings, setListings] = useState(null);
   const [loading, setLoading] = useState(true);
   const [lastListing, setLastListing] = useState(null);
+  const params = useParams();
 
   useEffect(() => {
     async function fetchListings() {
@@ -16,7 +18,7 @@ export default function Offers() {
         const listingRef = collection(db, 'listings');
         const q = query(
           listingRef,
-          where('offer', '==', true),
+          where('type', '==', params.categoryName),
           orderBy('timestamp', 'desc'),
           limit(8)
         );
@@ -38,14 +40,14 @@ export default function Offers() {
     }
 
     fetchListings();
-  }, []);
+  }, [params.categoryName]);
 
   async function onFetchMoreListings() {
     try {
       const listingRef = collection(db, 'listings');
       const q = query(
         listingRef,
-        where('offer', '==', true),
+        where('type', '==', params.categoryName),
         orderBy('timestamp', 'desc'),
         startAfter(lastListing),
         limit(4)
@@ -69,7 +71,9 @@ export default function Offers() {
 
   return (
     <div className='max-w-6xl mx-auto px-3'>
-      <h1 className='text-3xl text-center mt-6 font-bold mb-6'>Offers</h1>
+      <h1 className='text-3xl text-center mt-6 font-bold mb-6'>
+        {params.categoryName === 'rent' ? 'Places for rent' : 'Places for sale'}
+      </h1>
       {loading ? (
         <Spinner />
       ) : listings && listings.length > 0 ? (

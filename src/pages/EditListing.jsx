@@ -212,7 +212,7 @@ export default function EditListing() {
           <button
             type='button'
             id='type'
-            value='sell'
+            value='sale'
             onClick={onChange}
             className={`mr-3 px-7 py-3 font-medium text-sm uppercase shadow-md rounded hover:shadow-lg focus:shadow-lg active:shadow-lg transition duration-150 ease-in-out w-full ${
               type === 'rent' ? 'bg-white text-black' : 'bg-slate-600 text-white'
@@ -226,7 +226,7 @@ export default function EditListing() {
             value='rent'
             onClick={onChange}
             className={`ml-3 px-7 py-3 font-medium text-sm uppercase shadow-md rounded hover:shadow-lg focus:shadow-lg active:shadow-lg transition duration-150 ease-in-out w-full ${
-              type === 'sell' ? 'bg-white text-black' : 'bg-slate-600 text-white'
+              type === 'sale' ? 'bg-white text-black' : 'bg-slate-600 text-white'
             }`}
           >
             Rent

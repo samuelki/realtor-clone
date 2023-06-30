@@ -70,7 +70,7 @@ export default function Home() {
         const listingsRef = collection(db, 'listings');
         const q = query(
           listingsRef,
-          where('type', '==', 'sell'),
+          where('type', '==', 'sale'),
           orderBy('timestamp', 'desc'),
           limit(4)
         );
